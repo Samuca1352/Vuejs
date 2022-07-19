@@ -9,42 +9,7 @@
 <body>
     <div id="app">
        <h1 > {{titulo}}</h1>
-       <label for="nome">Nome</label>
-        <input type="text" v-model="nome">
-       <br><br>
-
-       <label for="Telefone">Telefone</label>
-       <input type="text" v-model="telefone">
-      <br><br>
-
-      <label for="novidades">Deseja Receber nossas novidades?</label>
-      <input type="radio" value="Sim" v-model="novidades"> Sim 
-      <input type="radio" value="Nao" v-model="novidades"> Nao
-     <br><br>
-
-     <label for="">Interesses</label> <br>
-     <input type="checkbox" value="Futebol" v-model="interesses"> Futebol <br>
-     <input type="checkbox" value="Formula 1" v-model="interesses"> Formula 1 <br>
-     <input type="checkbox" value="Corrida" v-model="interesses"> corrida <br>
-    <br><br>
-
-        <label for="">Como nos conheceu?</label>
-        <select name="" id="" v-model="conheceu">
-            <option value="">Escolha</option>
-            <option value="Google">Google</option>
-            <option value="Tv">Tv</option>
-            <option value="Instagram">Insta</option>
-        </select>
-        <br><br>
-        <button>ENVIAR</button>
-
-        <hr>
-        Nome: {{nome}} <br>
-        Telefone: {{telefone}} <br>
-        Novidades: {{novidades}} <br>
-        Interesses: {{interesses}} <br>
-        conheceu: {{conheceu}} <br>
-
+        <img :src="imagem" v-bind:alt="alt">
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 
@@ -52,13 +17,9 @@
         var app = new Vue({
             el: "#app",
             data: {
-                titulo : "Aula 1 Vuejs",
-                nome: "",
-                telefone: "",
-                novidades: "",
-                interesses:[],
-                conheceu:""
-
+                titulo : "Curso Vuejs",
+                imagem: "vue.png",
+                alt: "teste"
 
 
             }
