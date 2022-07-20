@@ -9,10 +9,11 @@
 </head>
 <body>
     <div id="app">
-       <h1 > {{titulo}} </h1>
-<form action="google.com">
-    <button class="btn btn-primary" type="submit" @click.prevent.stop="enviar()">Enviar</button>
-</form>
+       <h1> {{titulo}} </h1>
+
+       <ul>
+        <li v-for="usuario in usuarios">{{usuario.nome | truncate()}}</li>
+       </ul>
        
 
 
@@ -24,14 +25,24 @@
 
             data: {
                 titulo : "Curso Vuejs",
-
+                usuarios:[
+                    {nome: 'Samuel'},
+                    {nome: 'jhon'},
+                    {nome: 'Tiago'},
+            ]
             },
+            filters:{
+                toUpperCase(str,param1,param2){
+                    return str.toUpperCase();
+                },
 
-            methods:{
-                enviar() {
-                    alert('Enviado!');
+                truncate(str){
+                    return str.substring(0,5)
                 }
-            }
+            },
+            methods:{
+               
+            },
         });
     </script>
 </body>
