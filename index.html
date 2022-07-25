@@ -21,7 +21,7 @@
 
     </div>
 
-    <template id="nav">
+    <template id="nav"> <!-- template navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
               <a class="navbar-brand" href="#">Navbar</a>
@@ -29,7 +29,8 @@
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <menu-bar></menu-bar>
+                <menu-bar :items="topNav"
+                @emit-click="getLink"></menu-bar>
                 
                 <form class="d-flex">
                   <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -41,41 +42,54 @@
 
     </template>
 
-    <template id="menu">
+    <template id="menu"> <!-- template menu -->
+        
+        <div>
+ 
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <li v-for="(item, index) in items" class="nav-item">
+              <a class="nav-link active" @click.stop.prevent="emitClick(index)" aria-current="page" href="#">{{item.label}}</a> <!-- @ É IGUAL V-ON: -->
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled">Disabled</a>
-            </li>
+            
           </ul>
+        </div>
     </template>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 
     <script>
          Vue.component('navbar', {//componentes reutilizável
-            template: "#nav"
+            template: "#nav",
+            data(){//data dentro de componentes tem que ser uma função com return dso elementos
+                return {
+                    topNav: [{ label: 'Home'},{ label: 'Link'},{ label: 'Disabled'}]
+                }
+
+            },
+            methods:{
+                getLink(index){
+                    alert(this.topNav[index].label)
+                }
+            }
         });
 
 
         Vue.component('menu-bar', {//componentes reutilizável
-            template: "#menu"
+            template: "#menu",
+            props:{
+                items:{
+                    type: Array, //o tipo pode ser String | Array | Object | Boolean
+                    required: true, //se o valor é requerido ou não
+                    default: []
+                }
+
+            },
+            
+            methods: {
+                emitClick(index) {
+                    this.$emit('emit-click',index) //$emit é uma emissão de dados, passamos o nome desse dado e o valor dele 'index'
+                }
+            }
         });
 
 
@@ -96,8 +110,8 @@
 
             },
 
-            methods: {//rotinas
-
+            methods: {//rotinas e funções para serem acessadas por fora
+                
             }
 
         });
