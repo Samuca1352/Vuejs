@@ -14,78 +14,38 @@
 </head>
 
 <body>
-    <div id="app" class="mt-2 container-fluid">
-        <br><br><br>
-
-
-      <card>
-
-        <h4 slot="title" class="card-title">
-            Titulo
-        </h4>
-      <p slot="text" class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-      <div slot="btn" class="d-flex justify-content-between align-items-center">
-        <div  class="btn-group">
-          <button type="submit" class="btn btn-outline-primary">View</button>
+    <div id="app">
+        <div class="container">
+            <h1> {{titulo}}</h1>
+            <button @click.stop.prevent="getUsers()" class="btn btn-success">get users</button>
         </div>
-
-      </card>
-
-
-    </div>
     </div> <!-- fim div app -->
 
-    <template id="card">
-        <div class="col-md-7">
-        <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
 
-            <div class="card-body">
-                
-                    <slot name="title"></slot>
-                
-
-                <slot name="text"></slot>
-                
-               <slot name="btn"></slot>
-                  </div>
-
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-    </template>
-
-    <template id="list">
-        <ul  class="list-group mt-3">
-            <li v-for="item in list" class="list-group-item">{{item.title}}</li>
-        </ul>
-    </template>
 
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 
     <script>
 
-        Vue.component('card', {
-            template: "#card",
-            data(){
-                return{
-                   
-                }
+
+
+        var mixin ={
+            created() {
+                console.log('helo vue from mixin')
             },
-            methods: {
-               
+            methods:{
+                getUsers() {
+                    //rotina de programação
+                    //localizar users
+                    console.log('get users from mixim')
+                }
             }
-
-        });
-
-
+        }
 
         var app = new Vue({
 
-
+            mixins:[mixin],
 
             el: "#app",
 
@@ -104,7 +64,8 @@
             },
 
             methods: {//rotinas e funções para serem acessadas por fora
-
+       
+                
             }
 
         });
