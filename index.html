@@ -18,29 +18,42 @@
         <br><br><br>
 
 
-        <input-form></input-form>
-        <my-list></my-list>
+      <card>
 
+        <h4 slot="title" class="card-title">
+            Titulo
+        </h4>
+      <p slot="text" class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <div slot="btn" class="d-flex justify-content-between align-items-center">
+        <div  class="btn-group">
+          <button type="submit" class="btn btn-outline-primary">View</button>
+        </div>
+
+      </card>
 
 
     </div>
     </div> <!-- fim div app -->
 
-    <template id="form">
-        <div class="card">
-            <div class="container">
-                <div class="card-block">
-                    <div class="form-group">
-                        <label for="input">Titulo</label>
-                        <br>
-                        <input id="input"
-                        v-model="title" type="text" class="form-control">
-                        <br>
-                    </div>
-                    <button @click.stop.prevent="submit()" class="btn btn-primary">Enviar</button>
-                    <br><br>
-                </div>
+    <template id="card">
+        <div class="col-md-7">
+        <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+            <div class="card-body">
+                
+                    <slot name="title"></slot>
+                
+
+                <slot name="text"></slot>
+                
+               <slot name="btn"></slot>
+                  </div>
+
+                <small class="text-muted">9 mins</small>
+              </div>
             </div>
+          </div>
         </div>
     </template>
 
@@ -55,44 +68,20 @@
 
     <script>
 
-        Vue.component('input-form', {
-            template: "#form",
+        Vue.component('card', {
+            template: "#card",
             data(){
                 return{
-                    title:'',
+                   
                 }
             },
             methods: {
-                submit(){
-                    eventBus.$emit('submit', this.title);
-                }
+               
             }
 
         });
 
-        Vue.component('my-list', {
-            template: "#list",
-            created() {
-                var vm = this;
-                eventBus.$on('submit', function(title){
-                     if (title) {
-                        vm.list.push({ title:  title});
-                    } 
-                    
-                });
-            },
 
-            data() {
-                return{
-                    list:[
-                        {title:"Ir a feira"},
-                    ]
-                }
-            }
-
-        });
-
-        var eventBus = new Vue();//variável "onibus"
 
         var app = new Vue({
 
