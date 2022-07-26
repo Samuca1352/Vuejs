@@ -18,41 +18,64 @@
         <div class="container">
             <h1> {{titulo}}</h1>
             <button @click.stop.prevent="getUsers()" class="btn btn-success">get users</button>
+            <div v-if="response.status==='error'" class="alert alert-danger">{{response.msg}}</div>
+
+            <div v-if="loader.users" class="alert alert-primary">
+                Carregando usuários
+            </div>
+
+            <ul>
+                <li v-for="user in users">{{user.name}}</li>
+            </ul>
         </div>
     </div> <!-- fim div app -->
 
 
 
-
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.3"></script>
 
     <script>
 
 
 
-        var mixin ={
-            created() {
-                console.log('helo vue from mixin')
-            },
-            methods:{
+        var mixin = {
+            methods: {
                 getUsers() {
-                    //rotina de programação
-                    //localizar users
-                    console.log('get users from mixim')
+                    this.loader.users = true;
+
+                    var url = 'http://jsonplaceholder.typicode.com/users';
+                    this.$http.get(url).then(function (r) { //vue-resource é usado com this.$http e o método
+                        this.users = r.body;
+                    },
+                        function (error) {
+                            this.response.status = "error"
+                            console.log(error);
+                        })
+                        .finally(function(){
+                            this.loader.users = false;
+                        });//quando o get for executada fará o (then)
                 }
             }
         }
 
         var app = new Vue({
 
-            mixins:[mixin],
+            mixins: [mixin],
 
             el: "#app",
 
 
             data: {// elementos 
                 titulo: "Curso Vuejs",
-
+                users: [],
+                loader:{
+                    users: false,
+                },
+                response: {
+                    msg: "Error 404",
+                    status: ""
+                }
             },
 
             computed: {//rotinas (roda sempre que há alterações) e retorna valores
@@ -64,8 +87,8 @@
             },
 
             methods: {//rotinas e funções para serem acessadas por fora
-       
-                
+
+
             }
 
         });
