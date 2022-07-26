@@ -34,7 +34,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.3"></script>
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
 
 
@@ -45,7 +45,15 @@
                     this.loader.users = true;
 
                     var url = 'http://jsonplaceholder.typicode.com/users';
-                    this.$http.get(url).then(function (r) { //vue-resource é usado com this.$http e o método
+                    var vm = this;
+
+                    axios.get(url).then(function(r){
+                        console.log(r);
+                        vm.users = r.data;//esse this vai dar erro porque está pegando da função, então tem que fazer uma... 
+                        vm.loader.users = false; //... variável do this fora da função
+                    });
+
+                    /* this.$http.get(url).then(function (r) { //vue-resource é usado com this.$http e o método
                         this.users = r.body;
                     },
                         function (error) {
@@ -54,7 +62,7 @@
                         })
                         .finally(function(){
                             this.loader.users = false;
-                        });//quando o get for executada fará o (then)
+                        });//quando o get for executada fará o (then) */
                 }
             }
         }
