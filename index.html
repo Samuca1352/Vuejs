@@ -6,94 +6,98 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>vuejs</title>
+    <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+
 </head>
 
 <body>
-    <div id="app" class="container-fluid mt-2">
+    <div id="app" class="mt-2 container-fluid">
+        <br><br><br>
 
 
-        <h1> {{titulo}} </h1>
-        
-        <navbar></navbar>
-        
+        <input-form></input-form>
+        <my-list></my-list>
+
+
 
     </div>
+    </div> <!-- fim div app -->
 
-    <template id="nav"> <!-- template navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="#">Navbar</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <menu-bar :items="topNav"
-                @emit-click="getLink"></menu-bar>
-                
-                <form class="d-flex">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-              </div>
+    <template id="form">
+        <div class="card">
+            <div class="container">
+                <div class="card-block">
+                    <div class="form-group">
+                        <label for="input">Titulo</label>
+                        <br>
+                        <input id="input"
+                        v-model="title" type="text" class="form-control">
+                        <br>
+                    </div>
+                    <button @click.stop.prevent="submit()" class="btn btn-primary">Enviar</button>
+                    <br><br>
+                </div>
             </div>
-          </nav>
-
-    </template>
-
-    <template id="menu"> <!-- template menu -->
-        
-        <div>
- 
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li v-for="(item, index) in items" class="nav-item">
-              <a class="nav-link active" @click.stop.prevent="emitClick(index)" aria-current="page" href="#">{{item.label}}</a> <!-- @ É IGUAL V-ON: -->
-            </li>
-            
-          </ul>
         </div>
     </template>
+
+    <template id="list">
+        <ul  class="list-group mt-3">
+            <li v-for="item in list" class="list-group-item">{{item.title}}</li>
+        </ul>
+    </template>
+
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 
     <script>
-         Vue.component('navbar', {//componentes reutilizável
-            template: "#nav",
-            data(){//data dentro de componentes tem que ser uma função com return dso elementos
-                return {
-                    topNav: [{ label: 'Home'},{ label: 'Link'},{ label: 'Disabled'}]
-                }
 
+        Vue.component('input-form', {
+            template: "#form",
+            data(){
+                return{
+                    title:'',
+                }
             },
-            methods:{
-                getLink(index){
-                    alert(this.topNav[index].label)
-                }
-            }
-        });
-
-
-        Vue.component('menu-bar', {//componentes reutilizável
-            template: "#menu",
-            props:{
-                items:{
-                    type: Array, //o tipo pode ser String | Array | Object | Boolean
-                    required: true, //se o valor é requerido ou não
-                    default: []
-                }
-
-            },
-            
             methods: {
-                emitClick(index) {
-                    this.$emit('emit-click',index) //$emit é uma emissão de dados, passamos o nome desse dado e o valor dele 'index'
+                submit(){
+                    eventBus.$emit('submit', this.title);
                 }
             }
+
         });
 
+        Vue.component('my-list', {
+            template: "#list",
+            created() {
+                var vm = this;
+                eventBus.$on('submit', function(title){
+                     if (title) {
+                        vm.list.push({ title:  title});
+                    } 
+                    
+                });
+            },
+
+            data() {
+                return{
+                    list:[
+                        {title:"Ir a feira"},
+                    ]
+                }
+            }
+
+        });
+
+        var eventBus = new Vue();//variável "onibus"
 
         var app = new Vue({
+
+
+
             el: "#app",
 
 
@@ -111,7 +115,7 @@
             },
 
             methods: {//rotinas e funções para serem acessadas por fora
-                
+
             }
 
         });
